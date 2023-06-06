@@ -20,8 +20,8 @@ import {
   parseToken,
 } from "./utils";
 import "./index.scss";
-import { URLType } from "constants/URLS";
 import { Navbar } from "components/UI/NavBar";
+import { Events } from "components/Pages/Events/Events";
 
 interface Props {
   match?: {
@@ -38,7 +38,7 @@ interface State {
 export interface AppProps extends RouteComponentProps {
   onLoginHandler(token: string): void;
   onLogoutHandler(): void;
-  urlFetch(url: URLType, queryParams?: any, errorHandler?: any): any;
+  urlFetch(url: string, queryParams?: any, errorHandler?: any): any;
   token: string;
   query: { [key: string]: string };
 }
@@ -76,7 +76,7 @@ class App extends React.Component<Props, State> {
       notifyToast("error", e.message);
     };
 
-    let urlFetch = async (url: URLType, queryParams: any, errorHandler?: any) => {
+    let urlFetch = async (url: string, queryParams: any, errorHandler?: any) => {
       let handle = (error) => {
         let handle = middleWare(error, handleError);
         if (errorHandler) handle = middleWare(error, errorHandler, handle);
@@ -144,7 +144,7 @@ class App extends React.Component<Props, State> {
     };
 
     const MaybeRedirect = (Component) => (props: RouteComponentProps) =>
-      token ? <Component {...this.getChildProps(props)} /> : <RedirectLogin {...props} />;
+      token || true /* TODO DETECT */ ? <Component {...this.getChildProps(props)} /> : <RedirectLogin {...props} />;
 
     return (
       <div id="app-container" className="flex col">
@@ -153,6 +153,7 @@ class App extends React.Component<Props, State> {
             <Route path="/" exact render={MaybeRedirect(HomePage)} />
             <Route path="/user" exact render={MaybeRedirect(UserPage)} />
             <Route path="/login" render={(props) => <Login {...this.getChildProps(props)} />} />
+            <Route path="/events" render={MaybeRedirect(Events)} />
           </Switch>
         </Router>
       </div>

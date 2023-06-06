@@ -49,6 +49,7 @@ namespace API {
                 options.UseSnakeCaseNamingConvention();
             });
             services.AddHttpContextAccessor();
+            services.AddTransient<IRecHubHttpClient>((s) => ActivatorUtilities.CreateInstance<RecHubHttpClient>(s));
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider services) {
