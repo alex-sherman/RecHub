@@ -3,10 +3,6 @@ import "./Events.scss";
 import { AppProps } from "index";
 import DataSource from "components/DataSource";
 
-interface State {
-  view: string;
-}
-
 function Event(event: any) {
   return (
     <div key={event.id}>
@@ -15,7 +11,7 @@ function Event(event: any) {
   );
 }
 
-export class Events extends React.Component<AppProps, State> {
+export class Events extends React.Component<AppProps> {
   render() {
     let query = { start: "2023-06-06", end: "2023-06-07" };
     return (
